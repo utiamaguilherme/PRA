@@ -1,0 +1,102 @@
+import java.util.HashSet;
+import java.util.Scanner;
+import java.util.Set;
+
+/**
+ * Valida o tipo do triangulo
+ * 5 5 5 equilatero
+ * 5 5 6 isosceles
+ * 3 4 5 escaleno
+ */
+public class TipoTriangulo {
+	double a,b,c;
+	
+	public void iniciar() {
+		lerLados();
+		Set<String> propriedades = getTipoTriangulo();
+		mostrarResultado(propriedades);
+	}
+
+	private Set<String> getTipoTriangulo() {
+		Set<String> propriedades = new HashSet<String>();
+		if (isValido()) {
+			propriedades.add("Válido");
+			determinarTipo(propriedades);
+		} else {
+			propriedades.add("Inválido");
+		}
+		return propriedades;
+	}
+
+	private void determinarTipo(Set<String> propriedades) {
+		if ( isLadosIguais() ) {
+			if (isEquilatero()) {
+				propriedades.add("Equilátero");
+			} else {
+				propriedades.add("Isósceles");
+			}
+		}
+		if (isEscaleno()) {
+			propriedades.add("Escaleno");
+		}
+		if (isRetangulo(hipotenusa)) {
+			propriedades.add("Retângulo");
+		}
+	}
+
+	private boolean isValido() {
+		return (a + b + c - this.getHipotenusa()) > this.getHipotenusa();
+	}
+
+	private boolean isEquilatero() {
+		return a == b && b == c;
+	}
+
+	private boolean isRetangulo(double hipotenusa) {
+		return ((a * a + b * b + c * c) - hipotenusa * hipotenusa) == hipotenusa
+				* hipotenusa;
+	}
+
+	private boolean isEscaleno() {
+		return a != b && b != c && c != a;
+	}
+
+	private final boolean isLadosIguais() {
+		return a == b || b == c || c == a;
+	}
+
+	private final double getHipotenusa() {
+		double hipotenusa;
+		hipotenusa = a;
+		if (hipotenusa < b) {
+			hipotenusa = b;
+		}
+		if (hipotenusa < c) {
+			hipotenusa = c;
+		}
+		return hipotenusa;
+	}
+
+	private void mostrarResultado(Set<String> propriedades) {
+		System.out.println("Propriedades do triangulo ->");
+		for (String valor : propriedades) {
+			System.out.println(valor);
+		}
+	}
+
+	private void lerLados() {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Informa o tipo do triangulo");
+		System.out.println("Informa o valor do lado a");
+		a = sc.nextDouble();
+		System.out.println("Informa o valor do lado b");
+		b = sc.nextDouble();
+		System.out.println("Informa o valor do lado c");
+		c = sc.nextDouble();
+	}
+
+	public static void main(String args[]) {
+		TipoTriangulo tipo = new TipoTriangulo();
+		tipo.iniciar();
+	}
+}
